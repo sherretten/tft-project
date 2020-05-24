@@ -5,6 +5,8 @@ import Player from './Components/player'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 
+const server = new URL("http://localhost:5000/api")
+
 
 class App extends React.Component {
   constructor(props){
@@ -17,24 +19,21 @@ class App extends React.Component {
   }
   setPlayerInfo = playerInfo => this.setState({ playerInfo: playerInfo })
 
-   fetchData(url) {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => data.results)
+  fetchData(){
+    fetch('http://localhost:5000/api')
+      .then((res) => res.json() ) 
       .then((data) => {
         console.log(data)
         this.setState({
           playerInfo: data,
           isLoaded: true,
-        });
+        })
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+    
   }
-
   componentDidMount(){
-    const api_key = `RGAPI-5221c891-7120-4df3-8154-07a2404632a2`
-    const url = "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/k6331YJSxlZRhcNv9Bo0qn9wj07ZoBuYdohhHL76i5WDFjA?api_key=RGAPI-5221c891-7120-4df3-8154-07a2404632a2"
-    this.fetchData(url)
+    this.fetchData()
   }
   render(){ 
     return(
