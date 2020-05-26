@@ -20,7 +20,7 @@ class App extends React.Component {
   setPlayerInfo = playerInfo => this.setState({ playerInfo: playerInfo })
 
   fetchData(){
-    fetch('http://localhost:5000/api')
+    fetch('http://localhost:5000/api?userName=poltsc2')
       .then((res) => res.json() ) 
       .then((data) => {
         console.log(data)
