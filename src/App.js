@@ -2,7 +2,7 @@
 // import Lookup from './Components/lookup'
 // import Stats from './Components/stats'
 import Player from './Components/player'
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 // import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 // import fetch from 'node-fetch';
 
@@ -59,12 +59,14 @@ import Player from './Components/player'
 // }
 
 
-
+// https://codesandbox.io/s/quirky-shtern-ef40n?file=/src/App.js
+// https://codesandbox.io/s/quirky-shtern-ef40n?file=/src/App.js
 
 
 import React from "react";
 import { Machine } from "xstate";
-import { useMachine } from "xstate/react";
+import { useMachine } from "@xstate/react";
+import { error } from 'xstate/lib/actions';
 
 const chart = {
   id: "playerForm",
@@ -99,20 +101,19 @@ function PlayerForm() {
     console.log(current.value);
   }, [current]);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     send("SUBMIT");
-
-    sendRequest({ userName }) //fetch
-      .then(response => {
-        console.log(response);
-        setPlayerInfo(response.json())
+    let result = await sendRequest({userName})
+    console.log(result)
+    if (result === error){
+      send("FAIL")
+    } else{
+        setPlayerInfo(result)
         send("SUCCEED")
-      })
-      .catch(err => {
-        send("FAIL")
-      })
+    }
+      
   }
 
   const handleChange = e => {
@@ -156,9 +157,11 @@ async function sendRequest({ userName }) {
   try{
     let response = await fetch(`http://localhost:5000/api?userName=${userName}`)
     let result = await response.json()
+    console.log("Send request: "+ result)
     return result
-  } catch(err) {
-    await Promise.reject(new Error("Bad username"))
+  } catch(error) {
+    // await Promise.reject(new Error("Bad username"))
+    return error
   }
 }
 
