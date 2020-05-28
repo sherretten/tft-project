@@ -6,7 +6,7 @@ app.use(cors())
 // var async = require('express-async-await')
 var fetch = require('node-fetch')
 const port = 5000
-const apiKey = `api_key=RGAPI-4cddd09f-0c28-4cfc-811c-7554be391adb`; //Change this once we get dotenv working
+const apiKey = `api_key=RGAPI-11fe100e-e8cf-48a7-865c-ac4b4d662def`; //Change this once we get dotenv working
 const count = `?count=10`
 
 app.get('/', (req, res) => {
@@ -29,7 +29,7 @@ let fetchData = async (userName) => {
     gameData: [],
     exncryptedID: String,
   }
-  console.log(userName)
+  // console.log(userName)
 
   // let puuid = `OhlL3sGdpT6cAg5xwcYwkhdG0or4Kvj8rJEZZ3s4r-_Tw2v04cH8PE-0YpCABPdgcpbpknxI5mv9yA`
 
