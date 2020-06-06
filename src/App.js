@@ -7,7 +7,7 @@ import { error } from 'xstate/lib/actions';
 import Head from './Components/header'
 import Foot from './Components/footer'
 
-
+//Basic state diagram idle, submitting/loading, success/failure
 const chart = {
   id: "playerForm",
   initial: "idle",
@@ -33,6 +33,7 @@ const chart = {
 const playerFormMachine = Machine(chart);
 
 function PlayerForm() {
+  //useState Hooks for changing states and info
   const [userName, setUsername] = React.useState('');
   const [current, send] = useMachine(playerFormMachine);
   const [playerInfo, setPlayerInfo] = React.useState([]);
@@ -41,12 +42,13 @@ function PlayerForm() {
     console.log(current.value);
   }, [current]);
 
+  //On submit function.. Takes the event and 
   const handleSubmit = async e => {
     e.preventDefault();
-
+    //Calling the function defined below
     send("SUBMIT");
     let result = await sendRequest({userName})
-    // console.log(result)
+    //Error never showed up... spent 4 hours trying to get it to work... never did
     if (result === error){
       send("FAIL")
     } else{
@@ -61,7 +63,6 @@ function PlayerForm() {
 
   return (
     <div>
-
       <Head />
     <div className="container">
       {current.matches("success") ? (
@@ -94,7 +95,7 @@ function PlayerForm() {
   );
 }
 
-
+//Calling the backend server with the given username from the form above
 async function sendRequest({ userName }) {
   try{
     let response = await fetch(`http://localhost:5000/api?userName=${userName}`)
@@ -104,7 +105,7 @@ async function sendRequest({ userName }) {
     return err
   }
 }
-
+//export default app
 export default function App() {
   return (
     <div className="App">

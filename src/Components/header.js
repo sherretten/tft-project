@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
-// bg="dark" expand="lg"
+
+//Header component, use to have a search component, wasn't able to set up given state machine. 
 class Head extends Component{
   render(){
     return(

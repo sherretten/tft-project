@@ -43,7 +43,7 @@ const Game = (props) => {
 
   )
 }
-
+//Dealing with the inconsistencies in the naming of the website with the icons
 function unitName(name){
   if(name.toLowerCase() === "tft3_xerath" )
     return "tft3_xerath.tft3_set3_xerath.png"
@@ -51,6 +51,9 @@ function unitName(name){
   return name.toLowerCase() + ".tft_set3.png"
 }
 
+//Dealing with the inconsistencies in the naming of the website with the icons
+//This one has a lot more than the other one. Naming is messed up because of the
+//reuse of previous icons
 function traitName(name){
   let newName = name.split("_")
   if(newName.length > 1){
