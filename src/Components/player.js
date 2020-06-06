@@ -1,25 +1,73 @@
-import React, { Component } from 'react'
-import Head from './header';
-import Foot from './footer';
+import React from 'react'
+import Game from './game'
+import { Bar } from 'react-chartjs-2'
 
+function Player(props){
+  const games = props.info.gameData
 
-class Player extends Component{
-  constructor(props){
-    super(props);
-    this.state={
+  const player = [props.info.puuid]
+  const playerStats = props.info.playerStats[0]
 
+  let wins = [0,0,0,0,0,0,0,0]
+  for( let i = 0; i < games.length; i++){
+    for(let j = 0; j < games[i].info.participants.length; j++){
+      if(games[i].info.participants[j].puuid === player[0]){
+        let placement = games[i].info.participants[j].placement
+        placement = placement -1;
+        wins[placement] = wins[placement] + 1
+      }
     }
   }
 
-  render(){
-    return(
+  const chartData = {
+        labels: ['#1', '#2', '#3', '#4', '#5', '#6', '#7', '#8'],
+        datasets:[
+          {
+            label:'Placements',
+            data: wins,
+            backgroundColor:[
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+              'rgba(255, 206, 86, 0.6)',
+              'rgba(75, 192, 192, 0.6)',
+              'rgba(153, 102, 255, 0.6)',
+              'rgba(255, 159, 64, 0.6)',
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(255, 159, 64, 0.6)'
+            ]
+          }
+        ],
+        options: {
+          legend:{
+            display: false
+          },
+          tooltips:{
+            callbacks: {
+              label: function(tooltipItem){
+                return tooltipItem.yLabel
+              }
+            }
+          }
+        }
+}
+  console.log(wins)
+  const icon = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${props.info.iconNumber}.jpg`
+  return(
+    <div>
+    <div className="container">
       <div>
-        <Head/>
-        Player
-        <Foot/>
+        
+        <img src={icon} alt="User Icon" className="img-thumbnail" style={{hieght: "105px", width: "105px"}} />
+        <h2>{props.info.Name}</h2>
+        <h3>{playerStats.tier} {playerStats.rank} {playerStats.leaguePoints} LP</h3>
+        <h3>{playerStats.wins} wins {playerStats.losses} losses</h3>
+        <Bar data={chartData} width={753} height={172}/>
       </div>
-    );
-  }
+      
+       {games.map((game) => <Game className="mb-3" {...game} {...player} options={{ maintainAspectRatio: false }}/>)}
+    </div>
+    </div>
+  )
 }
 
 export default Player;
